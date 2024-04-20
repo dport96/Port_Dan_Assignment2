@@ -1,0 +1,35 @@
+<script>
+// get the query string into a easy to use object
+const params = (new URL(document.location)).searchParams;
+let errors = {};
+if(params.has('errors')) {
+    errors = JSON.parse(params.get('errors'));
+    params.delete('errors');
+}
+console.log(errors);
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.write(`<form action="process_login?${params.toString()}" method="POST">`);
+    </script>
+
+    <input type="text" name="email" size="40" placeholder="enter email address" ><br />
+    <input type="password" name="password" size="40" placeholder="enter password"><br />
+    <input type="submit" value="Login" id="submit">
+    </form>
+    <div class="container create_account">
+        <script>
+            document.write(`<a href="registration_page.html?${params.toString()}">Create an account</a>`);
+        </script>
+    
+      </div>
+    </body>
+</html>

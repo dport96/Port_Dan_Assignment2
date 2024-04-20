@@ -1,0 +1,8 @@
+X Create login and registration page
+X Read user data into server for login and registration
+X - process registration and save user registration data to user_data.json
+X Integrate login and registration pages
+X - No invoice unless logged in or registered
+X - Greet user by name on invoice
+X - Process login
+X - pass quantity data from login and registration to invoice
