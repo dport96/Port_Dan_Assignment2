@@ -1,11 +1,14 @@
 // get the query string into a easy to use object
 const params = (new URL(document.location)).searchParams;
 
+let user_email = getCookie('login_email');
 // check if query string has email, if not, send back to login page
-if(!params.has('email')) {
+if(user_email=== '') {
   alert('You are not logged in');
   window.location = './login_page.html?' + params.toString();
 }
+
+
 
 let quantities = [];
 // check if the query string has quantities, parse it and convert elements to numbers
@@ -25,7 +28,7 @@ window.onload = function () {
       response.json().then(function (json) {
         products = json;
         display_invoice();
-        email_span.innerText = params.get('email');
+        email_span.innerText = user_email;
       });
     } else {
       console.log('Network request for products.json failed with response ' + response.status + ': ' + response.statusText);
@@ -79,4 +82,20 @@ function display_invoice() {
 // Compute grand total and write into table
   let total = subtotal + tax + shipping;
   document.getElementById('total_span').innerText = total.toFixed(2);
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }

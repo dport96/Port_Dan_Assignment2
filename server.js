@@ -8,6 +8,9 @@ const user_data = require(user_data_file);
 const express = require('express');
 const app = express();
 
+const session = require('express-session');
+app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
+
 // load fs module
 const fs = require('fs');
 
@@ -34,6 +37,9 @@ app.post('/process_login', function (req, res, next) {
     // check if the password is correct
     if (req.body.password == user_data[req.body.email].password) {
       // password ok, send to invoice
+      // give the user a cookie with email
+      res.cookie('login_email', req.body.email);
+      params.append('quantities', req.session.quantities);
       res.redirect('./invoice.html?' + params.toString());
       return;
     } else {
@@ -125,7 +131,8 @@ app.post('/process_purchase_form', function (req, res, next) {
     res.redirect('store.html?' + params.toString());
   } else { // not errors, go to invoice
     // decrease inventory here ** move to when invoice is created **
-    res.redirect('./login_page.html?' + params.toString());
+    req.session.quantities = JSON.stringify(quantities);
+    res.redirect('./login_page.html');
   }
 
 });
